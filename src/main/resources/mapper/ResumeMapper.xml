@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.ResumeMapper">
+    <resultMap id="ResumeMap" type="com.datealive.entity.pojo.Resume">
+        <result property="id" column="resume_id"/>
+        <result property="name" column="resume_name"/>
+        <result property="school" column="resume_school"/>
+        <result property="major" column="resume_major"/>
+        <result property="gender" column="resume_gender"/>
+        <result property="introduction" column="resume_introduction"/>
+        <result property="power" column="resume_power"/>
+        <result property="grade" column="resume_grade"/>
+    </resultMap>
+    <select id="getAllResume" resultMap="ResumeMap">
+        select * from gzhu_user_resume
+    </select>
+    <update id="setConnectionBetweenUserAndExperience" >
+        update gzhu_user_experience
+        set gzhu_resume_id=#{resID}
+        where experience_id=#{expID}
+    </update>
+    <insert id="createResume" parameterType="com.datealive.entity.pojo.Resume" useGeneratedKeys="true"  keyProperty="id">
+        insert into gzhu_user_resume
+            (resume_id,resume_name,resume_school,resume_major,
+            resume_gender,resume_introduction,resume_power,resume_grade)
+        values (NULL,#{name},#{school},#{major},
+                #{gender},#{introduction},#{power},#{grade})
+    </insert>
+
+    <update id="updateResume" parameterType="com.datealive.entity.pojo.Resume">
+        update gzhu_user_resume
+            set resume_name=#{name},resume_school=#{school},resume_major=#{major},
+                resume_gender=#{gender},resume_introduction=#{introduction},
+                resume_power=#{power},resume_grade=#{grade}
+            where resume_id=#{id}
+    </update>
+    <select id="getResumeByID" resultMap="ResumeMap">
+        select *
+        from gzhu_user_resume
+        where resume_id=#{ID}
+    </select>
+
+    <select id="getAllResumeCnt" resultType="Long">
+        select count(*)
+        from gzhu_user_resume
+    </select>
+
+
+
+</mapper>

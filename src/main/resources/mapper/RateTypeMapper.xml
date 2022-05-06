@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.RateTypeMapper">
+
+    <resultMap id="RateTypeMap" type="com.datealive.entity.vo.Rate.RateType">
+        <result column="type_id" property="ID"/>
+        <result column="type_name" property="name"/>
+    </resultMap>
+
+    <insert id="createRateType" parameterType="com.datealive.entity.vo.Rate.RateType">
+        insert into gzhu_rate_type (type_id,type_name) values (null ,#{name})
+    </insert>
+    
+    <delete id="deleteRateType">
+        delete from gzhu_rate_type where type_id=#{ID}
+    </delete>
+    
+    <update id="updateRateType">
+        update gzhu_rate_type
+        set type_name=#{name}
+        where type_id=#{ID}
+    </update>
+
+    <select id="getTypeList" resultMap="RateTypeMap">
+        select *
+        from gzhu_rate_type
+    </select>
+
+    <select id="getTypeByRateTypeID" resultMap="RateTypeMap">
+        select *
+        from gzhu_rate_type
+        where type_id=#{ID}
+    </select>
+
+    <select id="getRateTypeCnt" resultType="Long">
+        select count(*)
+        from gzhu_rate_type
+    </select>
+</mapper>

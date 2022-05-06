@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.ExperienceMapper">
+    <resultMap id="experienceMap" type="com.datealive.entity.pojo.Experience">
+        <result column="experience_id" property="id"/>
+        <result column="experience_name" property="name"/>
+        <result column="experience_date" property="date"/>
+        <result column="experience_position" property="position"/>
+        <result column="experience_award" property="award"/>
+        <result column="gzhu_resume_id" property="resumeID"/>
+        <result column="experience_user_id" property="userID"/>
+    </resultMap>
+    <select id="getExperienceListByResumeID" resultMap="experienceMap">
+        select *
+        from gzhu_user_experience
+        where gzhu_resume_id=#{resumeID}
+    </select>
+
+    <insert id="createExperience" parameterType="com.datealive.entity.pojo.Experience">
+        insert into gzhu_user_experience
+            (experience_id,experience_name,experience_date,
+             experience_position,experience_award,gzhu_resume_id,
+             experience_user_id)
+        values (NULL,#{name},#{date},#{position},#{award},#{resumeID},#{userID});
+    </insert>
+
+    <delete id="deleteExperience">
+        delete from gzhu_user_experience where experience_id=#{expID}
+    </delete>
+
+    <delete id="deleteExperienceByUserID">
+        delete from gzhu_user_experience where experience_user_id=#{userID}
+    </delete>
+
+    <update id="updateExperience" parameterType="com.datealive.entity.pojo.Experience">
+        update gzhu_user_experience
+        set experience_name=#{name},experience_date=#{date},
+            experience_position=#{position},experience_award=#{award}
+        where experience_id=#{id}
+    </update>
+
+    <select id="getExperienceListByResumeIDCnt" resultType="Long">
+        select count(*)
+        from gzhu_user_experience
+        where gzhu_resume_id=#{resumeID}
+    </select>
+
+</mapper>

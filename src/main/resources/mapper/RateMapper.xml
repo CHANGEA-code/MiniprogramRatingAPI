@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.RateMapper">
+
+    <resultMap id="RateDetailMap" type="com.datealive.entity.pojo.Rate">
+        <result property="id" column="rate_id"/>
+        <result property="host" column="rate_host"/>
+        <result property="title" column="rate_title"/>
+        <result property="grade" column="rate_grade"/>
+        <result property="applyStart" column="rate_apply_start"/>
+        <result property="applyEnd" column="rate_apply_end"/>
+        <result property="start" column="rate_start"/>
+        <result property="end" column="rate_end"/>
+        <result property="bannerUrl" column="rate_banner"/>
+        <result property="isTeam" column="rate_isTeam"/>
+        <result property="typeID" column="rate_type_id"/>
+        <result property="content" column="rate_content"/>
+        <result property="price" column="rate_price"/>
+        <result property="location" column="rate_location"/>
+        <result property="isOnline" column="rate_isOnline"/>
+        <result property="countLimited" column="rate_count_limited"/>
+        <result property="isCross" column="rate_isCross"/>
+        <result property="counts" column="rate_counts"/>
+        <result property="introduction" column="rate_introduction" />
+        <result property="canApply" column="rate_canApply" />
+    </resultMap>
+
+    <resultMap id="RateListMap" type="com.datealive.entity.vo.Rate.RateList">
+        <result property="id" column="rate_id"/>
+        <result property="host" column="rate_host"/>
+        <result property="title" column="rate_title"/>
+        <result property="bannerUrl" column="rate_banner"/>
+        <result property="applyBegin" column="rate_apply_start"/>
+        <result property="end" column="rate_end"/>
+    </resultMap>
+
+    <insert id="createRate" parameterType="com.datealive.entity.pojo.Rate">
+        insert into gzhu_rate
+        (
+            rate_id,rate_host,rate_title,
+            rate_grade,rate_apply_start,rate_apply_end,
+            rate_start,rate_end,rate_banner,
+            rate_isTeam,rate_type_id,rate_content,
+            rate_price,rate_location,rate_isOnline,
+            rate_count_limited,rate_isCross,rate_counts
+        )
+        values (
+                NULL,#{host},#{title},
+                #{grade},#{applyStart},#{applyEnd},
+                #{start},#{end},#{bannerUrl},
+                #{isTeam},#{typeID},#{content},
+                #{price},#{location},#{isOnline},
+                #{countLimited},#{isCross},#{counts}
+               )
+    </insert>
+
+    <select id="getRateList" resultMap="RateListMap">
+        select rate_id,rate_host,rate_title,rate_banner,rate_apply_start,rate_end
+        from gzhu_rate
+    </select>
+
+    <select id="getRateDetailByID" resultMap="RateDetailMap">
+        select *
+        from gzhu_rate
+        where rate_id=#{ID}
+    </select>
+
+    <delete id="deleteRateByID">
+        delete from gzhu_rate where rate_id=#{ID}
+    </delete>
+
+    <update id="updateRateByID" parameterType="com.datealive.entity.pojo.Rate">
+        update gzhu_rate
+        set rate_host = #{host},rate_title=#{title},rate_grade=#{grade},
+            rate_apply_start=#{applyStart},rate_apply_end=#{applyEnd},
+            rate_start=#{start},rate_end=#{end},rate_banner=#{bannerUrl},
+            rate_isTeam=#{isTeam},rate_type_id=#{typeID},rate_content=#{content},
+            rate_price=#{price},rate_location=#{location},rate_isOnline=#{isOnline},
+            rate_count_limited=#{countLimited},rate_isCross=#{isCross},rate_counts=#{counts}
+            where rate_id=#{id}
+    </update>
+
+    <resultMap id="RateTopMap" type="com.datealive.entity.dto.RateTopList">
+        <result property="id" column="rate_id" />
+        <result property="title" column="rate_title" />
+        <result property="banner" column="rate_banner" />
+    </resultMap>
+
+    <select id="getTopRateByRateID" parameterType="Long" resultMap="RateTopMap">
+        select gzhu_rate.rate_id,gzhu_rate.rate_title,gzhu_rate.rate_banner from gzhu_rate where rate_id=#{ID};
+    </select>
+
+    <select id="getRateCnt" resultType="Long">
+        select count(*)
+        from gzhu_rate
+    </select>
+
+    <resultMap id="rateSearchList" type="com.datealive.entity.dto.RateSearchListDto">
+        <result property="ID" column="rate_id"/>
+        <result property="title" column="rate_title"/>
+        <result property="banner" column="rate_banner"/>
+        <result property="applyBegin" column="rate_apply_start"/>
+        <result property="applyEnd" column="rate_apply_end"/>
+    </resultMap>
+
+    <select id="getRateListByMultiCondition" resultMap="rateSearchList">
+            select rate_id,rate_title,rate_banner,rate_apply_start,rate_apply_end from gzhu_rate
+            <where>
+                <if test="typeID!=null">
+                   and rate_type_id=#{typeID}
+                </if>
+                <if test="grade!=null">
+                    and rate_grade=#{grade}
+                </if>
+                <if test="isTeam!=null">
+                    and rate_isTeam=#{isTeam};
+                </if>
+            </where>
+        </select>
+
+    <select id="getRateListByTitle" resultMap="rateSearchList">
+        select rate_id,rate_title,rate_banner,rate_apply_start,rate_apply_end
+        from gzhu_rate
+        where rate_title like concat('%',#{title},'%')
+    </select>
+
+
+
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.UserExperienceMapper">
+    <resultMap id="experienceMap" type="com.datealive.entity.pojo.Experience">
+        <result property="experienceId" column="experience_id"/>
+        <result property="experienceName" column="experience_name"/>
+        <result property="experienceDate" column="experience_date"/>
+        <result property="experiencePosition" column="experience_position"/>
+        <result property="experienceAward" column="experience_award"/>
+    </resultMap>
+    <select id="getExperienceListByUserId" resultMap="experienceMap">
+        select experience_id,experience_name,experience_date,experience_position,experience_award
+        from gzhu_user_experience
+        where experience-user_id=#{ID}
+    </select>
+    <update id="updateExperience" parameterType="com.datealive.entity.pojo.Experience">
+        update gzhu_user_experience
+        set experience_name = #{name},
+            experience_date=#{date},
+            experience_position=#{position},
+            experience_award=#{award}
+            where experience_id=#{id};
+    </update>
+
+    <insert id="createExperience" parameterType="com.datealive.entity.pojo.Experience">
+        insert into gzhu_user_experience ()
+        values ();
+    </insert>
+</mapper>

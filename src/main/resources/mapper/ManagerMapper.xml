@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.ManagerMapper">
+
+    <resultMap id="managerMap" type="com.datealive.entity.pojo.Manager">
+        <result column="manager_id" property="managerId" />
+        <result column="manager_username" property="username" />
+        <result column="manager_password" property="password" />
+        <result column="manager_email" property="managerEmail" />
+        <result column="manager_nickname" property="managerNickname" />
+        <result column="role" property="role"/>
+    </resultMap>
+
+    <select id="getManagerByName" resultMap="managerMap">
+        select * from gzhu_manager where manager_username = #{manager_username}
+    </select>
+
+    <select id="getManagerByNameAndPassword" resultMap="managerMap">
+        select * from gzhu_manager where manager_username =#{manager_username} and manager_password =#{manager_password}
+    </select>
+
+</mapper>

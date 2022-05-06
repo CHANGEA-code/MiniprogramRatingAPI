@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.UserMapper">
+    <resultMap id="allPropertiesOfUser" type="com.datealive.entity.pojo.User">
+        <result property="gender" column="user_gender"/>
+        <result property="id" column="user_id"/>
+        <result property="username" column="user_username"/>
+        <result property="password" column="user_password"/>
+        <result property="email" column="user_email"/>
+        <result property="createTime" column="create_time"/>
+        <result property="nickName" column="user_nickname"/>
+        <result property="avatarUrl" column="user_avatar"/>
+        <result property="isindentify" column="user_isindentify"/>
+        <result property="phone" column="user_phone"/>
+        <result property="country" column="user_country"/>
+        <result property="province" column="user_province"/>
+        <result property="city" column="user_city"/>
+        <result property="gender" column="user_gender"/>
+        <result property="openID" column="user_openID"/>
+        <result property="resumeId" column="gzhu_resume_id"/>
+    </resultMap>
+
+
+    <select id="getUserDetailByID" resultMap="allPropertiesOfUser">
+        select *
+        from gzhu_user
+        where user_id=#{ID};
+    </select>
+
+    <update id="updateUserDetailMessageByID" parameterType="com.datealive.entity.vo.User.UpdateUserDetail">
+        update gzhu_user
+        set user_username=#{username},
+            user_password=#{password},
+            user_email=#{email},
+            user_nickname=#{nickname},
+            user_avatar=#{avatarUrl},
+            user_phone=#{phone}
+        where user_id=#{id}
+    </update>
+
+    <update id="updateUserAvatar">
+        update gzhu_user
+        set user_avatar=#{avatar}
+        where user_id=#{ID}
+    </update>
+
+    <resultMap id="userListMap" type="com.datealive.entity.vo.User.UserListObj">
+        <result column="user_nickname" property="nickname"/>
+        <result column="user_avatar" property="avatar"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_gender" property="gender"/>
+    </resultMap>
+
+    <select id="getUserListByNickname" resultMap="userListMap">
+        select user_nickname,user_avatar,user_id,user_gender
+        from gzhu.gzhu_user where user_nickname like concat('%',#{nickname},'%')
+    </select>
+
+    <insert id="insertUser" parameterType="com.datealive.entity.pojo.User" keyProperty="id" useGeneratedKeys="true">
+        insert into gzhu_user
+        (
+            user_id,
+            user_username,user_password,user_email,
+            create_time,user_nickname,user_avatar,
+            user_isindentify,user_phone,
+            user_country,user_province,user_city,user_gender,
+            user_openID,gzhu_resume_id
+        )
+        values (
+                   NULL,
+                   #{username},#{password},#{email},
+                   #{createTime},#{nickName},#{avatarUrl},
+                   #{isindentify},#{phone},
+                   #{country},#{province},#{city},#{gender},#{openID},#{resumeId}
+               )
+    </insert>
+    
+
+<!--    <update id="setConnectionBetweenUserAndExperience">-->
+<!--        update gzhu_user_experience-->
+<!--        SET gzhu_resume_id=#{resID}-->
+<!--        where experience_id=#{expID};-->
+<!--    </update>-->
+
+    <select id="findUserByOpenId" parameterType="String" resultMap="allPropertiesOfUser">
+        select * from gzhu_user where user_openId = #{openID}
+    </select>
+
+    <select id="findOpenIdByUserId" resultType="String" parameterType="Long">
+        select  gzhu_user.user_openId from gzhu_user where user_id=#{ID}
+    </select>
+    
+    <update id="updateEmail">
+        update gzhu_user
+        set user_email=#{email}
+        where user_id=#{ID}
+    </update>
+    <update id="updatePhone">
+        update gzhu_user
+        set user_phone = #{phone}
+        where user_id=#{ID};
+    </update>
+    <update id="updateUsername">
+        update gzhu_user
+        set user_username = #{username}
+        where user_id=#{ID};
+    </update>
+    <update id="connectUserToResumeByID">
+        update gzhu_user
+        set gzhu_resume_id = #{resumeID},
+            user_isIndentify=1
+        where user_id=#{userID};
+    </update>
+
+    <select id="getUserListObjByID" resultMap="userListMap" parameterType="Long">
+        select user_nickname,user_avatar,user_id,user_gender from gzhu_user where user_id=#{userID}
+    </select>
+
+    <update id="updateIndentity">
+        update gzhu_user set user_isindentify=1 where user_id=#{id}
+    </update>
+
+</mapper>

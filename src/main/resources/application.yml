@@ -1,0 +1,64 @@
+server:
+  port: 8089
+
+spring:
+  datasource:
+    username: root
+    password: 01e541c51fdee033
+    url: jdbc:mysql://127.0.0.1:3306/gzhu?serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource # 自定义数据源
+    #Spring Boot 默认是不注入这些属性值的，需要自己绑定
+    #druid 数据源专有配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: false
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    stat-view-servlet:
+      enabled: false
+    web-stat-filter:
+      enabled: false
+    filter:
+      config:
+        enabled: false
+    #配置监控统计拦截的filters，stat:监控统计、log4j：日志记录、wall：防御sql注入
+    #如果允许时报错  java.lang.ClassNotFoundException: org.apache.log4j.Priority
+    #则导入 log4j 依赖即可，Maven 地址：https://mvnrepository.com/artifact/log4j/log4j
+    filters: stat,log4j2,wall
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    connectionInitSqls : set names utf8mb4
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰命名
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.datealive.entity.pojo
+
+token:
+  secretKey: zhangrenfeng
+  expireTime: 7200000
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+file-save-path: /www/wwwroot/wechat.datealive.top/image #文件上传位置D:/blogimg
+
+WeChat:
+  appid: wxb54a7e86b968c9eb #wx7bb8646bc01bfd42 #wxb54a7e86b968c9eb
+  secret: b9d7923370d8b93d76f20aec1afbadb1 #5f047d84bc50462739a29ea8234ace6d #5f047d84bc50462739a29ea8234ace6d  77b23cafb08692910f28852451086ef3
+
+
+
