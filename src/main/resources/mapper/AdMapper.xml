@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.AdMapper">
+
+
+    <resultMap id="AdBase" type="com.datealive.entity.pojo.Ad">
+        <id property="adId" column="ad_id"/>
+        <id property="adName" column="ad_name"/>
+        <id property="adUrl" column="ad_url"/>
+        <id property="adBanner" column="ad_banner"/>
+    </resultMap>
+
+    <select id="getAllAdMapperByPage" resultMap="AdBase">
+        select * from gzhu_ad
+    </select>
+
+    <select id="getAllAdCnt" resultType="Long">
+        select count(*) from gzhu_ad;
+    </select>
+
+    <select id="getAdByAdId" parameterType="Long" resultMap="AdBase">
+        select * from gzhu_ad where ad_id = #{ad_id};
+    </select>
+
+    <insert id="insertAd" parameterType="com.datealive.entity.pojo.Ad" useGeneratedKeys="true" keyProperty="adId">
+        insert into gzhu_ad (ad_name,ad_url,ad_banner)
+        values (#{adName},#{adUrl},#{adBanner});
+    </insert>
+
+    <delete id="deleteAd" parameterType="Long">
+        delete from gzhu_ad where ad_id = #{ad_id}
+    </delete>
+
+    <update id="updateAd" parameterType="com.datealive.entity.pojo.Ad">
+        update gzhu_ad
+        set ad_name = #{adName},
+            ad_url  = #{adUrl},
+            ad_banner = #{adBanner}
+        where ad_id = #{adId};
+    </update>
+
+
+
+
+
+
+</mapper>

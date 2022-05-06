@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.TeamMapper">
+    <resultMap id="TeamMap" type="com.datealive.entity.pojo.Team">
+        <result column="team_id" property="teamID"/>
+        <result column="rate_id" property="rateID"/>
+        <result column="user_id" property="captainID"/>
+        <result column="gzhu_team_cnt" property="cnt"/>
+        <result column="gzhu_team_name" property="name"/>
+        <result column="gzhu_team_introduction" property="introduction"/>
+        <result column="team_avatarUrl" property="avatarUrl"/>
+        <result column="countLimited" property="cntLimited"/>
+    </resultMap>
+    
+    <insert id="createTeam" parameterType="com.datealive.entity.pojo.Team">
+        insert into gzhu_team (
+                               team_id, rate_id, user_id,
+                               gzhu_team_cnt,gzhu_team_name,
+                               gzhu_team_introduction,team_avatarUrl,countLimited)
+        values (
+                null,#{rateID},#{captainID},
+                #{cnt},#{name},#{introduction},#{avatarUrl},#{cntLimited}
+               )
+    </insert>
+
+    <delete id="deleteTeamByTeamID">
+        delete from gzhu_team where team_id=#{teamID}
+    </delete>
+
+    <delete id="deleteTeamByRateID">
+        delete from gzhu_team where rate_id=#{rateID}
+    </delete>
+
+    <update id="updateTeam" parameterType="com.datealive.entity.pojo.Team">
+        update gzhu_team
+        set gzhu_team_cnt=#{cnt},gzhu_team_name=#{name},
+            gzhu_team_introduction=#{introduction},team_avatarUrl=#{avatarUrl}
+        where team_id=#{teamID}
+    </update>
+
+    <update id="increaseTeamCnt">
+        update gzhu_team
+        set gzhu_team_cnt=gzhu_team_cnt+1
+        where team_id=#{id}
+    </update>
+
+    <update id="descreaseTeamCnt">
+        update gzhu_team
+        set gzhu_team_cnt=gzhu_team_cnt-1
+        where team_id=#{id}
+    </update>
+
+    <select id="getTeamListByCaptainID" resultMap="TeamMap">
+        select *
+        from gzhu_team
+        where user_id=#{captainID}
+    </select>
+
+    <select id="getTeamListByRateID" resultMap="TeamMap">
+        select *
+        from gzhu_team
+        where rate_id=#{rateID}
+    </select>
+
+    <select id="getTeamListByTeamID" resultMap="TeamMap">
+        select *
+        from gzhu_team
+        where team_id=#{teamID}
+    </select>
+
+    <select id="getTeamListByUserIDCnt" resultType="Long">
+        select count(*)
+        from gzhu_team
+        where user_id=#{captainID}
+    </select>
+
+    <select id="getTeamListByRateIDCnt" resultType="Long">
+        select count(*)
+        from gzhu_team
+        where rate_id=#{rateID}
+    </select>
+
+    <select id="getTeamListByTeamName" resultMap="TeamMap">
+        select *
+        from gzhu_team
+        where gzhu_team_name like concat('%',#{teamName},'%')
+    </select>
+
+    <select id="getAllTeamCnt" resultType="long">
+        select count(*)
+        from gzhu_team
+    </select>
+
+    <select id="getRateCntByRateID" resultType="Long">
+        select count(*)
+        from gzhu_team
+        where rate_id=#{id}
+    </select>
+
+    <resultMap id="TeamRateMap" type="com.datealive.entity.dto.TeamRate">
+        <result column="team_id" property="teamID"/>
+        <result column="rate_id" property="rateID"/>
+        <result column="user_id" property="captainID"/>
+        <result column="gzhu_team_cnt" property="cnt"/>
+        <result column="gzhu_team_name" property="name"/>
+        <result column="gzhu_team_introduction" property="introduction"/>
+        <result column="team_avatarUrl" property="avatarUrl"/>
+        <result column="rate_title" property="title"/>
+        <result column="countLimited" property="cntLimited"/>
+    </resultMap>
+
+    <select id="getAllTeam" resultMap="TeamRateMap">
+        select t.*,rate.rate_title
+        from gzhu_team t,gzhu_rate rate
+        where t.rate_id=rate.rate_id
+    </select>
+</mapper>

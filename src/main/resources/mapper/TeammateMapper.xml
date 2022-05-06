@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.TeammateMapper">
+    <resultMap id="TeammateMap" type="com.datealive.entity.pojo.Teammate">
+        <result column="teammate_id" property="teammateID"/>
+        <result column="team_id" property="teamID"/>
+        <result column="user_id" property="userID"/>
+    </resultMap>
+
+    <delete id="exitTeamByTeammateID">
+        delete from gzhu_teammate where teammate_id=#{teammateID}
+    </delete>
+    
+    <delete id="exitTeamByUserIDAndTeamID">
+        delete from gzhu_teammate where team_id=#{teamID} and user_id=#{userID}
+    </delete>
+
+    <insert id="joinInTeam" parameterType="com.datealive.entity.pojo.Teammate">
+        insert into gzhu_teammate (teammate_id,team_id,user_id)
+        values (null,#{teamID},#{userID})
+    </insert>
+    
+    <select id="getTeammateByTeammateID" resultMap="TeammateMap">
+        select *
+        from gzhu_teammate
+        where teammate_id=#{teammateID}
+    </select>
+    
+    <select id="getTeammateByUserID" resultMap="TeammateMap">
+        select *
+        from gzhu_teammate
+        where user_id=#{userID}
+    </select>
+
+    <select id="getTeammateByTeamID" resultMap="TeammateMap">
+        select *
+        from gzhu_teammate
+        where team_id=#{teamID}
+    </select>
+
+    <select id="getTeammateCntByUserID" resultType="Long">
+        select count(*)
+        from gzhu_teammate
+        where user_id=#{userID}
+    </select>
+
+    <resultMap id="TeamMap" type="com.datealive.entity.pojo.Team">
+        <result column="team_id" property="teamID"/>
+        <result column="rate_id" property="rateID"/>
+        <result column="user_id" property="captainID"/>
+        <result column="gzhu_team_cnt" property="cnt"/>
+        <result column="gzhu_team_name" property="name"/>
+        <result column="gzhu_team_introduction" property="introduction"/>
+        <result column="team_avatarUrl" property="avatarUrl"/>
+    </resultMap>
+
+    <select id="getTeamByUserID" resultMap="TeamMap">
+        select *
+        from gzhu_team team
+        where team.team_id in (
+            select teammate.team_id
+            from gzhu_teammate teammate
+            where teammate.user_id=#{userID}
+            )
+    </select>
+
+    <select id="getTeammateCntByTeamID" resultType="Long">
+        select count(*)
+        from gzhu_teammate
+        where team_id=#{teamID}
+    </select>
+</mapper>

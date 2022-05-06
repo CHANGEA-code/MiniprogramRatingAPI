@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.RateADRelationMapper">
+    <resultMap id="adRateRelationMap" type="com.datealive.entity.pojo.RateAdRelation">
+        <result property="relationID" column="relation_id"/>
+        <result property="adID" column="gzhu_ad_id"/>
+        <result property="rateID" column="gzhu_rate_id"/>
+
+    </resultMap>
+    <insert id="createRelation" parameterType="com.datealive.entity.pojo.RateAdRelation">
+        insert into gzhu_rate_ad_relation (relation_id,gzhu_ad_id,gzhu_rate_id)
+        values (null,#{adID},#{rateID})
+    </insert>
+
+    <delete id="deleteRelationByRelationID">
+        delete from gzhu_rate_ad_relation where relation_id=#{relationID}
+    </delete>
+
+    <select id="getRateAdRelationByRelationID" resultMap="adRateRelationMap">
+        select *
+        from gzhu_rate_ad_relation
+        where relation_id=#{relationID}
+    </select>
+
+    <select id="getRelationByRateID" resultMap="adRateRelationMap">
+        select *
+        from gzhu_rate_ad_relation
+        where gzhu_rate_id=#{rateID}
+    </select>
+
+    <select id="getRelationByADID" resultMap="adRateRelationMap">
+        select *
+        from gzhu_rate_ad_relation
+        where gzhu_ad_id=#{ADID}
+    </select>
+
+    <select id="getRelationByRateIDCnt" resultType="Long">
+        select count(*)
+        from gzhu_rate_ad_relation
+        where gzhu_rate_id=#{rateID}
+    </select>
+
+    <select id="getRelationByADIDCnt" resultType="Long">
+        select count(*)
+        from gzhu_rate_ad_relation
+        where gzhu_ad_id=#{ADID}
+    </select>
+
+
+</mapper>

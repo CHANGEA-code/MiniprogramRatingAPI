@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.PointsMapper">
+
+    <resultMap id="PointsBase" type="com.datealive.entity.pojo.Points">
+        <id property="pointsId" column="points_id" />
+        <id property="pointsCnt" column="points_cnt" />
+        <id property="gzhuUserId" column="gzhu_user_id" />
+    </resultMap>
+    <select id="getPointsByPointsId" parameterType="Long" resultMap="PointsBase">
+        select * from gzhu_points where points_id = #{points_id}
+    </select>
+    <select id="getPointsByUserId" parameterType="Long" resultMap="PointsBase">
+        select * from gzhu_points where gzhu_user_id = #{gzhu_user_id}
+    </select>
+
+    <insert id="insertPoints" parameterType="com.datealive.entity.pojo.Points">
+        insert into gzhu_points (points_cnt,gzhu_user_id)
+        values (#{pointsCnt},#{gzhuUserId});
+    </insert>
+
+    <delete id="deletePointsByPointsId" parameterType="Long">
+        delete from gzhu_points where points_id= #{points_id}
+    </delete>
+
+    <delete id="deletePointsByUserId" parameterType="Long">
+        delete from gzhu_points where gzhu_user_id = #{gzhu_user_id}
+    </delete>
+
+    <update id="changePointsByPointsId" parameterType="Long">
+        update gzhu_points
+        set points_cnt = #{points_cnt}
+        where points_id = #{points_id};
+    </update>
+
+    <update id="changePointsByUserId" parameterType="Long">
+        update gzhu_points
+        set points_cnt = #{points_cnt}
+        where gzhu_user_id = #{gzhu_user_id};
+    </update>
+
+
+
+
+
+
+
+
+</mapper>

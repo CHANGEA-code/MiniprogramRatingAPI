@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.AdAndRateMapper">
+
+
+    <resultMap id="AdAndRateBase" type="com.datealive.entity.pojo.AdAndRate">
+        <id property="relationId" column="relation_id" />
+        <id property="gzhuAdId" column="gzhu_ad_id" />
+        <id property="gzhuRateId" column="gzhu_rate_id" />
+
+    </resultMap>
+
+
+    <select id="getAdAndRateByAdId" resultMap="AdAndRateBase" parameterType="Long">
+        select * from gzhu_rate_ad_relation where gzhu_ad_id = #{gzhu_ad_id}
+    </select>
+
+
+    <select id="getAdAndRateByRateId" resultMap="AdAndRateBase" parameterType="Long">
+        select * from gzhu_rate_ad_relation where gzhu_rate_id = #{gzhu_rate_id}
+    </select>
+
+    <select id="getAdAndRateListByRateId" resultMap="AdAndRateBase" parameterType="Long">
+        select * from gzhu_rate_ad_relation where gzhu_rate_id = #{gzhu_rate_id}
+    </select>
+    <insert id="insertAdAndRate" parameterType="com.datealive.entity.pojo.AdAndRate" useGeneratedKeys="true" keyProperty="relationId">
+        insert into gzhu_rate_ad_relation (gzhu_ad_id,gzhu_rate_id)
+        values (#{gzhuAdId},#{gzhuRateId});
+    </insert>
+
+    <delete id="deleteAdAndRateByAdId" parameterType="Long">
+        delete from gzhu_rate_ad_relation where gzhu_ad_id = #{gzhu_ad_id}
+    </delete>
+
+
+    <delete id="deleteAdAndRateByRateId" parameterType="Long">
+        delete from gzhu_rate_ad_relation where gzhu_rate_id = #{gzhu_rate_id}
+    </delete>
+
+
+
+
+</mapper>

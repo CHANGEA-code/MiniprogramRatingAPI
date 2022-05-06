@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.GoodsMapper">
+
+    <resultMap id="GoodsBase" type="com.datealive.entity.pojo.Goods">
+        <id property="goodsId" column="goods_id" />
+        <id property="goodsName" column="goods_name" />
+        <id property="goodsPrice" column="goods_price" />
+        <id property="goodsCnt" column="goods_cnt" />
+        <id property="goodsBanner" column="goods_banner" />
+
+    </resultMap>
+
+    <!--注意使用分页插件 这里不要使用 ; -->
+    <select id="getAllGoods" resultMap="GoodsBase">
+        select * from gzhu_goods
+    </select>
+
+    <select id="getAllGoodsCnt" resultType="Long">
+        select count(*) from gzhu_goods
+    </select>
+
+    <select id="getGoodsByGoodsId" resultMap="GoodsBase" parameterType="Long">
+        select * from gzhu_goods where goods_id = #{goods_id}
+    </select>
+
+    <insert id="insertGoods" parameterType="com.datealive.entity.pojo.Goods">
+        insert into gzhu_goods (goods_name,goods_price,goods_cnt,goods_banner)
+        values (#{goodsName},#{goodsPrice},#{goodsCnt},#{goodsBanner});
+    </insert>
+
+    <delete id="deleteGoodsByGoodsId" parameterType="Long">
+        delete from gzhu_goods where goods_id = #{goods_id}
+    </delete>
+
+    <update id="updateGoodsByGoodsIdAndGoodsPrice" parameterType="Long">
+        update gzhu_goods
+        set  goods_price= #{goods_price}
+        where goods_id = #{goods_id};
+    </update>
+
+    <update id="updateGoodsByGoodsIdAndGoodsCnt" parameterType="Long">
+        update gzhu_goods
+        set goods_cnt = #{goods_cnt}
+        where goods_id= #{goods_id};
+    </update>
+
+
+
+
+
+
+</mapper>

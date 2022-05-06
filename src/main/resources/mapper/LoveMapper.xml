@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.LoveMapper">
+    <resultMap id="LoveMap" type="com.datealive.entity.pojo.Love">
+        <result property="loveID" column="love_id"/>
+        <result property="rateID" column="rate_id"/>
+        <result property="userID" column="gzhu_user_id"/>
+    </resultMap>
+
+    <select id="getLoveListByUserID" resultMap="LoveMap">
+        select *
+        from gzhu_love
+        where gzhu_user_id=#{userID}
+    </select>
+    
+    <select id="getLoveListByRateID" resultMap="LoveMap">
+        select *
+        from gzhu_love
+        where rate_id=#{rateID}
+    </select>
+
+    <select id="getLoveByLoveID" resultMap="LoveMap">
+        select *
+        from gzhu_love
+        where love_id=#{loveID}
+    </select>
+    
+    <insert id="createLove" parameterType="com.datealive.entity.pojo.Love" useGeneratedKeys="true" keyProperty="loveID">
+        insert into gzhu_love (love_id, rate_id, gzhu_user_id)
+        values (null ,#{rateID},#{userID})
+    </insert>
+
+    <delete id="deleteLove">
+        delete from gzhu_love where love_id=#{loveID}
+    </delete>
+
+    <select id="getLoveByUserIDByCnt" parameterType="Long" resultType="Long">
+        select count(*)
+        from gzhu_love
+        where gzhu_user_id=#{userID}
+    </select>
+
+    <select id="getLoveByRateIDByCnt" parameterType="Long" resultType="Long">
+        select count(*)
+        from gzhu_love
+        where rate_id=#{rateID}
+    </select>
+
+</mapper>

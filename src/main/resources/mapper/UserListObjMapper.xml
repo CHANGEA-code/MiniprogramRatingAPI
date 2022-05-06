@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.datealive.mapper.UserListObjMapper">
+
+    <resultMap id="gradeMap" type="com.datealive.entity.vo.User.UserGradeObj">
+        <result column="user_nickname" property="nickname"/>
+        <result column="user_avatar" property="avatar"/>
+        <result column="user_gender" property="gender"/>
+        <result column="rateCnt" property="rateCnt"/>
+        <result property="userID" column="user_id"/>
+    </resultMap>
+    <select id="getUserAndRateCntByTeam" resultMap="gradeMap">
+        select distinct u.*,
+                        (select count(team_id) from gzhu_team as t where t.user_id=u.user_id) as rateCnt
+        from gzhu_user u left join gzhu_team team
+                                   on u.user_id= team.user_id
+        where u.user_id=#{userID}
+    </select>
+
+    <select id="getUserAndRateCntByTeammate" resultMap="gradeMap">
+        select distinct u.*,
+                        (select count(teammate_id) from gzhu_teammate as t where t.user_id=u.user_id) as rateCnt
+        from gzhu_user u left join gzhu_teammate teammate
+                                   on u.user_id= teammate.user_id
+        where u.user_id=#{userID}
+    </select>
+
+    <select id="getUserGradeByTeam" resultMap="gradeMap">
+        select distinct u.*,
+                        (select count(team_id) from gzhu_team as t where t.user_id=u.user_id) as rateCnt
+        from gzhu_user u left join gzhu_team team
+                                   on u.user_id= team.user_id;
+    </select>
+
+    <select id="getUserGradeByTeammate" resultMap="gradeMap">
+        select distinct u.*,
+                        (select count(teammate_id) from gzhu_teammate as t where t.user_id=u.user_id) as rateCnt
+        from gzhu_user u left join gzhu_teammate teammate
+                                   on u.user_id= teammate.user_id;
+    </select>
+</mapper>
